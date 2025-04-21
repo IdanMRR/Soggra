@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחקים - Soggra</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&family=Noto+Sans+Hebrew:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans Hebrew', 'Poppins', sans-serif;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 8px 30px var(--shadow-color);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            animation: borderGlow 2s linear infinite;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(var(--accent-color-rgb), 0.2);
+        }
+
+        @keyframes borderGlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .game-preview {
+            width: 100%;
+            height: 80px;
+            background: var(--preview-bg, #05051133);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        body.light-theme .game-preview {
+            background: var(--preview-bg, #e0e1e8);
+        }
+
+        .game-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            color: var(--text-color);
+        }
+
+        .game-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(110, 142, 251, 0.4);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .play-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.6s;
+        }
+
+        .play-button:hover::before {
+            left: 100%;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-button:active {
+            transform: translateY(1px);
+        }
+
+        .content h1 {
+            font-size: 3.5rem;
+        }
+
+        .wave {
+            font-size: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+                padding: 0.5rem;
+            }
+            
+            .game-card {
+                padding: 1.2rem;
+            }
+
+            .game-preview {
+                height: 70px;
+            }
+
+            .game-title {
+                font-size: 1.1rem;
+            }
+
+            .game-description {
+                font-size: 0.85rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .content h1 {
+                font-size: 2.5rem;
+            }
+
+            .wave {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <header>
+        <div class="logo">
+            <a href="index.html">Soggra</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">בית</a></li>
+                <li><a href="about.html">אודות</a></li>
+                <li><a href="games.html" class="active">משחקים</a></li>
+            </ul>
+            <button class="theme-toggle" title="החלף ערכת נושא" aria-label="החלף מצב כהה">☀️</button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="content">
+            <h1>משחקים <span class="wave">🎮</span></h1>
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-preview">
+                        🎲
+                    </div>
+                    <h2 class="game-title">משחק ניחושים</h2>
+                    <p class="game-description">
+                        נסה לנחש את המספר הנכון! אתגר את עצמך עם רמות קושי שונות ומצבי משחק.
+                        האם תוכל לשבור את השיא שלך?
+                    </p>
+                    <button onclick="window.location.href='game/index.html'" class="play-button">שחק עכשיו</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="theme-controls">
+                <button class="lang-toggle" title="החלף שפה" aria-label="החלף שפה">EN</button>
+                <button class="color-toggle" title="שנה צבע נושא" aria-label="שנה צבע נושא">🎨</button>
+                <button class="btn btn-theme" id="bgPattern">✨</button>
+                <button class="btn btn-theme" id="bgColor">🌈</button>
+            </div>
+            <p>נבנה עם <span class="heart">♥</span> Soggra | <span id="funny-text">לא הצלחתי לקרוא את המונה</span></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const translations = {
+                he: {
+                    logo: 'Soggra',
+                    nav_home: 'בית',
+                    nav_about: 'אודות',
+                    nav_games: 'משחקים',
+                    theme_toggle_title: 'החלף ערכת נושא',
+                    theme_toggle_aria: 'החלף מצב כהה',
+                    heading: 'משחקים',
+                    game_title: 'משחק ניחושים',
+                    game_description: 'נסה לנחש את המספר הנכון! אתגר את עצמך עם רמות קושי שונות ומצבי משחק. האם תוכל לשבור את השיא שלך?',
+                    play_button: 'שחק עכשיו',
+                    color_toggle_title: 'שנה צבע נושא',
+                    color_toggle_aria: 'שנה צבע נושא',
+                    footer_text: 'נבנה עם <span class="heart">♥</span> Soggra | <span id="funny-text">לא הצלחתי לקרוא את המונה</span>',
+                    funny_texts: [
+                        'לא הצלחתי לקרוא את המונה!',
+                        'מונה? איזה מונה?',
+                        'סופר... אוי, איבדתי את זה!',
+                        'אבוד בחלל!',
+                        'סופר כבשים במקום!',
+                        'שגיאה 404: המונה לא נמצא!',
+                        'המונה שלי ברח!',
+                        'סופר עד אינסוף... מיד חוזר!'
+                    ]
+                },
+                en: {
+                    logo: 'Soggra',
+                    nav_home: 'Home',
+                    nav_about: 'About',
+                    nav_games: 'Games',
+                    theme_toggle_title: 'Toggle theme',
+                    theme_toggle_aria: 'Toggle dark mode',
+                    heading: 'Games',
+                    game_title: 'Guessing Game',
+                    game_description: 'Try to guess the correct number! Challenge yourself with different difficulty levels and game modes. Can you beat your high score?',
+                    play_button: 'Play Now',
+                    color_toggle_title: 'Change color theme',
+                    color_toggle_aria: 'Change color theme',
+                    footer_text: 'built with <span class="heart">♥</span> Soggra | <span id="funny-text">Couldn\'t read the counter</span>',
+                    funny_texts: [
+                        'Couldn\'t read the counter!',
+                        'Counter? What counter?',
+                        'Counting... oops, lost it!',
+                        'Lost in the void!',
+                        'Counting sheep instead!',
+                        'Error 404: Counter not found!',
+                        'My counter ran away!',
+                        'Counting to infinity... brb!'
+                    ]
+                }
+            };
+
+            const langToggle = document.querySelector('.lang-toggle');
+            const html = document.documentElement;
+            const logo = document.querySelector('.logo a');
+            const navLinks = document.querySelectorAll('nav ul li a');
+            const themeToggle = document.querySelector('.theme-toggle');
+            const heading = document.querySelector('.content h1');
+            const gameTitle = document.querySelector('.game-title');
+            const gameDescription = document.querySelector('.game-description');
+            const playButton = document.querySelector('.play-button');
+            const colorToggle = document.querySelector('.color-toggle');
+            const footerText = document.querySelector('.footer-content p');
+            const funnyText = document.getElementById('funny-text');
+
+            let currentLang = localStorage.getItem('language') || 'he';
+            let phraseIndex = 0;
+
+            const updateContent = (lang) => {
+                const data = translations[lang];
+                html.setAttribute('lang', lang);
+                html.setAttribute('dir', lang === 'he' ? 'rtl' : 'ltr');
+                logo.textContent = data.logo;
+                navLinks[0].textContent = data.nav_home;
+                navLinks[1].textContent = data.nav_about;
+                navLinks[2].textContent = data.nav_games;
+                themeToggle.setAttribute('title', data.theme_toggle_title);
+                themeToggle.setAttribute('aria-label', data.theme_toggle_aria);
+                heading.firstChild.textContent = data.heading;
+                gameTitle.textContent = data.game_title;
+                gameDescription.textContent = data.game_description;
+                playButton.textContent = data.play_button;
+                colorToggle.setAttribute('title', data.color_toggle_title);
+                colorToggle.setAttribute('aria-label', data.color_toggle_aria);
+                footerText.innerHTML = data.footer_text;
+                langToggle.textContent = lang === 'he' ? 'EN' : 'HE';
+
+                // Update funny text rotation
+                const funnyTexts = data.funny_texts;
+                funnyText.textContent = funnyTexts[phraseIndex];
+                clearInterval(window.funnyTextInterval);
+                window.funnyTextInterval = setInterval(() => {
+                    funnyText.classList.add('fade');
+                    setTimeout(() => {
+                        phraseIndex = (phraseIndex + 1) % funnyTexts.length;
+                        funnyText.textContent = funnyTexts[phraseIndex];
+                        funnyText.classList.remove('fade');
+                    }, 500);
+                }, 10000);
+            };
+
+            updateContent(currentLang);
+
+            langToggle.addEventListener('click', () => {
+                currentLang = currentLang === 'he' ? 'en' : 'he';
+                localStorage.setItem('language', currentLang);
+                updateContent(currentLang);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'933ad9546ec91361',t:'MTc0NTIxNzE5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

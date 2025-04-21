@@ -1,0 +1,2646 @@
+/* חלק 1: עיצוב כללי ורספונסיביות */
+:root {
+  --text-color: #e0e0e0;
+  --text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  --button-shadow: 0 4px 15px rgba(30, 144, 255, 0.4);
+  --gradient-dark: linear-gradient(45deg, #2a2a2a, #4a90e2, #e94e77, #50c878, #ff66cc, #66ccff, #ffcc66);
+  --gradient-light: linear-gradient(45deg, #f0f0f0, #a3cffa, #ff99cc, #b3e6b3, #ffd1dc, #d9d9ff);
+  --gradient-neon: linear-gradient(45deg, #1a1a3d, #2e2e5a, #3a3a7a, #00cc00, #cc00cc, #00cccc);
+  --gradient-space: linear-gradient(45deg, #0a0a23, #1a1a3d, #2e2e5a, #3a3a7a, #4a4a9a, #5a5aba, #0a0a23);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Rubik", sans-serif;
+  background: var(--gradient-dark);
+  background-size: 600%;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  direction: rtl;
+  animation: gradient 20s ease infinite;
+  transition: background 0.5s ease, color 0.5s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+
+body.light {
+  background: linear-gradient(45deg, #e0ff98, #ff9dd3, #58f1f1, #8bff8b);
+  background-size: 600%;
+  animation: gradient 20s ease infinite;
+  color: #333333;
+}
+
+@keyframes light {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body.neon {
+  background: linear-gradient(45deg, #00ffcc, #ff00ff, #00ffff, #00ffcc);
+  background-size: 600%;
+  animation: gradient 20s ease infinite;
+  color: #00ffcc;
+  text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc;
+}
+
+@keyframes neon {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body.space {
+  background: var(--gradient-space);
+  color: #ffffff;
+  --text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  --button-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Ensure RGB waves override all gradients and animations */
+body.rgb {
+  background: none !important;
+  background-image: none !important;
+  animation: none !important;
+  transition: background-color 0.5s ease;
+}
+
+
+body.rgb.dark,
+body.rgb.light,
+body.rgb.neon,
+body.rgb.space {
+  background: none !important;
+  background-image: none !important;
+  animation: none !important;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* חלק 2: אנימציות ניצוצות וזוהר */
+.sparkle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+  border-radius: 50%;
+  animation: sparkle 1.2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes sparkle {
+  0% { transform: scale(0); opacity: 1; }
+  50% { transform: scale(1.8); opacity: 0.9; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+button:hover {
+  animation: glow 1.5s infinite;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3); }
+}
+
+body.light button:hover {
+  animation: glow-light 1.5s infinite;
+}
+
+@keyframes glow-light {
+  0% { box-shadow: 0 0 5px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.2); }
+  50% { box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 0, 0, 0.3); }
+  100% { box-shadow: 0 0 5px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.2); }
+}
+
+body.neon button:hover {
+  animation: glow-neon 1.5s infinite;
+}
+
+@keyframes glow-neon {
+  0% { box-shadow: 0 0 5px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.3); }
+}
+
+body.space button:hover {
+  animation: glow-space 1.5s infinite;
+}
+
+@keyframes glow-space {
+  0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3); }
+}
+
+button:active {
+  animation: bounce-button 0.3s ease;
+}
+
+@keyframes bounce-button {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+button:focus,
+input:focus,
+select:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  transition: outline 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+body.light button:focus,
+body.light input:focus,
+body.light select:focus {
+  outline: 2px solid #333333;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+body.neon button:focus,
+body.neon input:focus,
+body.neon select:focus {
+  outline: 2px solid #00ffcc;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+}
+
+/* Remove focus outline for non-interactive elements */
+h1:focus,
+h3:focus,
+h4:focus,
+p:focus,
+label:focus,
+li:focus {
+  outline: none;
+}
+
+#settingsBtn,
+#statsBtn {
+  position: fixed;
+  top: 20px;
+  padding: 10px;
+  z-index: 1000;
+}
+
+#settingsBtn {
+  right: 20px;
+}
+
+#statsBtn {
+  right: 80px;
+}
+
+#settingsBtn:hover,
+#statsBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+body.light #settingsBtn,
+body.light #statsBtn {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+body.light #settingsBtn:hover,
+body.light #statsBtn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body.neon #settingsBtn,
+body.neon #statsBtn {
+  background: rgba(0, 255, 255, 0.3);
+}
+
+body.neon #settingsBtn:hover,
+body.neon #statsBtn:hover {
+  background: rgba(0, 255, 255, 0.5);
+}
+
+/* חלק 4: עיצוב אזור המשחק והכותרת */
+#gameArea {
+  max-width: 450px;
+  padding: 25px;
+  background-color: rgba(42, 42, 42, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+  outline: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  width: 100%;
+  margin: 0 auto;
+}
+
+body.light #gameArea {
+  background-color: rgba(255, 255, 255, 0.9);
+  outline: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+body.neon #gameArea {
+  background-color: rgba(26, 26, 61, 0.9);
+  outline: 1px solid rgba(0, 255, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+body.space #gameArea {
+  background-color: rgba(10, 10, 35, 0.9);
+  outline: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 15px;
+  text-shadow: var(--text-shadow);
+}
+
+/* Game Selection Menu */
+.game-selection {
+  margin: 20px 0;
+}
+
+.game-selection h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.game-selection button {
+  padding: 12px 24px;
+  font-size: 18px;
+  margin: 5px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1e90ff, #00b7eb);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: var(--button-shadow);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.game-selection button:hover {
+  background: linear-gradient(135deg, #00b7eb, #1e90ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.6);
+}
+
+body.light .game-selection button {
+  background: linear-gradient(135deg, #87cefa, #b0e0e6);
+  color: #333333;
+}
+
+body.light .game-selection button:hover {
+  background: linear-gradient(135deg, #b0e0e6, #87cefa);
+  box-shadow: 0 6px 20px rgba(135, 206, 250, 0.6);
+}
+
+body.neon .game-selection button {
+  background: linear-gradient(135deg, #00ced1, #40e0d0);
+  color: #000000;
+}
+
+body.neon .game-selection button:hover {
+  background: linear-gradient(135deg, #40e0d0, #00ced1);
+  box-shadow: 0 6px 20px rgba(0, 206, 209, 0.7);
+}
+
+/* Game Sections */
+.game-section {
+  display: block;
+}
+
+.game-section.hidden {
+  display: none;
+}
+
+/* Memory Match Game */
+.memory-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+  justify-items: center;
+}
+
+.memory-card {
+  width: 60px;
+  height: 60px;
+  background-color: #4a90e2;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  user-select: none;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.memory-card.flipped {
+  background-color: #ffffff;
+  transform: rotateY(180deg);
+}
+
+.memory-card.matched {
+  background-color: #50c878;
+}
+
+body.light .memory-card {
+  background-color: #87cefa;
+}
+
+body.light .memory-card.flipped {
+  background-color: #e0e0e0;
+}
+
+body.light .memory-card.matched {
+  background-color: #b3e6b3;
+}
+
+body.neon .memory-card {
+  background-color: #00ced1;
+}
+
+body.neon .memory-card.flipped {
+  background-color: #00ffcc;
+}
+
+body.neon .memory-card.matched {
+  background-color: #00ff00;
+}
+
+/* Trivia Game */
+.trivia-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.trivia-option {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1e90ff, #00b7eb);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: var(--button-shadow);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.trivia-option:hover {
+  background: linear-gradient(135deg, #00b7eb, #1e90ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.6);
+}
+
+.trivia-option.correct {
+  background: linear-gradient(135deg, #50c878, #32cd32);
+}
+
+.trivia-option.incorrect {
+  background: linear-gradient(135deg, #e94e77, #ff4040);
+}
+
+body.light .trivia-option {
+  background: linear-gradient(135deg, #87cefa, #b0e0e6);
+  color: #333333;
+}
+
+body.light .trivia-option:hover {
+  background: linear-gradient(135deg, #b0e0e6, #87cefa);
+  box-shadow: 0 6px 20px rgba(135, 206, 250, 0.6);
+}
+
+body.neon .trivia-option {
+  background: linear-gradient(135deg, #00ced1, #40e0d0);
+  color: #000000;
+}
+
+body.neon .trivia-option:hover {
+  background: linear-gradient(135deg, #40e0d0, #00ced1);
+  box-shadow: 0 6px 20px rgba(0, 206, 209, 0.7);
+}
+
+/* Admin Panel */
+.admin-section {
+  margin: 15px 0;
+}
+
+.admin-section h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+#adminUserSelect,
+#adminBanUserSelect,
+#adminResetScoreSelect {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ffffff;
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  transition: background 0.3s ease, border 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+body.light #adminUserSelect,
+body.light #adminBanUserSelect,
+body.light #adminResetScoreSelect {
+  border: px solid #333333;
+  background: rgba(255, 255, 255, 0.3);
+  color: #333333;
+}
+
+body.neon #adminUserSelect,
+body.neon #adminBanUserSelect,
+body.neon #adminResetScoreSelect {
+  border: 1px solid #00ffcc;
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffcc;
+}
+
+#banUserBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+  margin-top: 10px;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#banUserBtn:hover {
+  background: linear-gradient(135deg, #ff6347, #ff4040);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.light #banUserBtn {
+  background: linear-gradient(135deg, #ff8080, #ffa07a);
+  color: #333333;
+}
+
+body.light #banUserBtn:hover {
+  background: linear-gradient(135deg, #ffa07a, #ff8080);
+  box-shadow: 0 6px 20px rgba(255, 128, 128, 0.6);
+}
+
+body.neon #banUserBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #000000;
+}
+
+#resetLeaderboardBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#resetLeaderboardBtn:hover {
+  background: linear-gradient(135deg, #ff6347, #ff4040);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.light #resetLeaderboardBtn {
+  background: linear-gradient(135deg, #ff8080, #ffa07a);
+  color: #333333;
+}
+
+body.light #resetLeaderboardBtn:hover {
+  background: linear-gradient(135deg, #ffa07a, #ff8080);
+  box-shadow: 0 6px 20px rgba(255, 128, 128, 0.6);
+}
+
+body.neon #resetLeaderboardBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #000000;
+}
+
+/* חלק 5: עיצוב בחירת רמת קושי */
+#difficultySection,
+#modeSection,
+#memoryDifficultySection,
+#triviaCategorySection {
+  margin: 20px 0;
+  position: relative;
+}
+
+#difficultySection label,
+#modeSection label,
+#memoryDifficultySection label,
+#triviaCategorySection label {
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+#difficulty,
+#gameMode,
+#memoryDifficulty,
+#triviaCategory,
+#rgbSpeed {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ffffff;
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  transition: background 0.3s ease, border 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+body.light #difficulty,
+body.light #gameMode,
+body.light #memoryDifficulty,
+body.light #triviaCategory,
+body.light #rgbSpeed {
+  border: 1px solid #333333;
+  background: rgba(255, 255, 255, 0.3);
+  color: #333333;
+}
+
+body.neon #difficulty,
+body.neon #gameMode,
+body.neon #memoryDifficulty,
+body.neon #triviaCategory,
+body.neon #rgbSpeed {
+  border: 1px solid #00ffcc;
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffcc;
+}
+
+.new-arrow {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #ffffff;
+  pointer-events: none;
+}
+
+body.light .new-arrow {
+  color: #333333;
+}
+
+body.neon .new-arrow {
+  color: #00ffcc;
+}
+
+/* חלק 6: עיצוב שיא אישי וטיימרים */
+#highscore,
+#timer,
+#idleTimer,
+#memoryTimer,
+#memoryMoves,
+#triviaScore,
+#triviaTimer {
+  font-size: 18px;
+  margin: 10px 0;
+  text-shadow: var(--text-shadow);
+}
+
+/* חלק 7: עיצוב כפתורי התחלה, עצירה, צפייה בסטטיסטיקות ושחק שוב */
+#startGameBtn,
+#stopGameBtn,
+#viewStatsBtn,
+#viewAchievementsBtn,
+#viewLeaderboardBtn,
+.playAgainBtn,
+#startMemoryMatchBtn,
+#restartMemoryMatchBtn,
+#startTriviaBtn,
+#restartTriviaBtn,
+#rgbBtn {
+  padding: 12px 24px;
+  font-size: 18px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1e90ff, #00b7eb);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: var(--button-shadow);
+  position: relative;
+  overflow: hidden;
+  min-width: 48px;
+  min-height: 48px;
+  touch-action: manipulation;
+}
+
+#startGameBtn:hover,
+#stopGameBtn:hover,
+#viewStatsBtn:hover,
+#viewAchievementsBtn:hover,
+#viewLeaderboardBtn:hover,
+.playAgainBtn:hover,
+#startMemoryMatchBtn:hover,
+#restartMemoryMatchBtn:hover,
+#startTriviaBtn:hover,
+#restartTriviaBtn:hover,
+#rgbBtn:hover {
+  background: linear-gradient(135deg, #00b7eb, #1e90ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.6);
+}
+
+body.light #startGameBtn,
+body.light #stopGameBtn,
+body.light #viewStatsBtn,
+body.light #viewAchievementsBtn,
+body.light #viewLeaderboardBtn,
+body.light .playAgainBtn,
+body.light #startMemoryMatchBtn,
+body.light #restartMemoryMatchBtn,
+body.light #startTriviaBtn,
+body.light #restartTriviaBtn,
+body.light #rgbBtn {
+  background: linear-gradient(135deg, #87cefa, #b0e0e6);
+  color: #333333;
+}
+
+body.light #startGameBtn:hover,
+body.light #stopGameBtn:hover,
+body.light #viewStatsBtn:hover,
+body.light #viewAchievementsBtn:hover,
+body.light #viewLeaderboardBtn:hover,
+body.light .playAgainBtn:hover,
+body.light #startMemoryMatchBtn:hover,
+body.light #restartMemoryMatchBtn:hover,
+body.light #startTriviaBtn:hover,
+body.light #restartTriviaBtn:hover,
+body.light #rgbBtn:hover {
+  background: linear-gradient(135deg, #b0e0e6, #87cefa);
+  box-shadow: 0 6px 20px rgba(135, 206, 250, 0.6);
+}
+
+body.neon #startGameBtn,
+body.neon #stopGameBtn,
+body.neon #viewStatsBtn,
+body.neon #viewAchievementsBtn,
+body.neon #viewLeaderboardBtn,
+body.neon .playAgainBtn,
+body.neon #startMemoryMatchBtn,
+body.neon #restartMemoryMatchBtn,
+body.neon #startTriviaBtn,
+body.neon #restartTriviaBtn,
+body.neon #rgbBtn {
+  background: linear-gradient(135deg, #00ced1, #40e0d0);
+  color: #000000;
+}
+
+body.neon #startGameBtn:hover,
+body.neon #stopGameBtn:hover,
+body.neon #viewStatsBtn:hover,
+body.neon #viewAchievementsBtn:hover,
+body.neon #viewLeaderboardBtn:hover,
+body.neon .playAgainBtn:hover,
+body.neon #startMemoryMatchBtn:hover,
+body.neon #restartMemoryMatchBtn:hover,
+body.neon #startTriviaBtn:hover,
+body.neon #restartTriviaBtn:hover,
+body.neon #rgbBtn:hover {
+  background: linear-gradient(135deg, #40e0d0, #00ced1);
+  box-shadow: 0 6px 20px rgba(0, 206, 209, 0.7);
+}
+
+#stopGameBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+}
+
+#stopGameBtn:hover {
+  background: linear-gradient(135deg, #ff6347, #ff4040);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.light #stopGameBtn {
+  background: linear-gradient(135deg, #ff8080, #ffa07a);
+  color: #333333;
+}
+
+body.light #stopGameBtn:hover {
+  background: linear-gradient(135deg, #ffa07a, #ff8080);
+  box-shadow: 0 6px 20px rgba(255, 128, 128, 0.6);
+}
+
+body.neon #stopGameBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #000000;
+}
+
+/* חלק 8: עיצוב שדה קלט וכפתורי ניחוש ורמז */
+#inputContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+#guessInput {
+  padding: 10px;
+  font-size: 16px;
+  width: 120px;
+  border-radius: 8px;
+  border: 1px solid #ffffff;
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+body.light #guessInput {
+  border: 1px solid #333333;
+  background: rgba(255, 255, 255, 0.3);
+  color: #333333;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+body.neon #guessInput {
+  border: 1px solid #00ffcc;
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffcc;
+  box-shadow: 0 2px 10px rgba(0, 255, 255, 0.3);
+}
+
+#guessButton,
+#hintButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: var(--button-shadow);
+  position: relative;
+  overflow: hidden;
+  min-width: 48px;
+  min-height: 48px;
+  touch-action: manipulation;
+}
+
+#guessButton {
+  background: linear-gradient(135deg, #1e90ff, #00b7eb);
+  color: #ffffff;
+}
+
+#guessButton:hover {
+  background: linear-gradient(135deg, #00b7eb, #1e90ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.6);
+}
+
+#hintButton {
+  background: linear-gradient(135deg, #ff8c00, #ffa500);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+}
+
+#hintButton:hover {
+  background: linear-gradient(135deg, #ffa500, #ff8c00);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6);
+}
+
+body.light #guessButton {
+  background: linear-gradient(135deg, #87cefa, #b0e0e6);
+  color: #333333;
+}
+
+body.light #guessButton:hover {
+  background: linear-gradient(135deg, #b0e0e6, #87cefa);
+  box-shadow: 0 6px 20px rgba(135, 206, 250, 0.6);
+}
+
+body.light #hintButton {
+  background: linear-gradient(135deg, #ffbf80, #ffdab9);
+  color: #333333;
+  box-shadow: 0 4px 15px rgba(255, 191, 128, 0.4);
+}
+
+body.light #hintButton:hover {
+  background: linear-gradient(135deg, #ffdab9, #ffbf80);
+  box-shadow: 0 6px 20px rgba(255, 191, 128, 0.6);
+}
+
+body.neon #guessButton {
+  background: linear-gradient(135deg, #00ced1, #40e0d0);
+  color: #000000;
+}
+
+body.neon #guessButton:hover {
+  background: linear-gradient(135deg, #40e0d0, #00ced1);
+  box-shadow: 0 6px 20px rgba(0, 206, 209, 0.7);
+}
+
+body.neon #hintButton {
+  background: linear-gradient(135deg, #ff8c00, #ffa500);
+  color: #000000;
+}
+
+/* חלק 9: עיצוב הודעות והלבבות */
+#message,
+#memoryMessage,
+#triviaMessage {
+  font-size: 18px;
+  margin: 15px 0;
+  min-height: 24px;
+  text-shadow: var(--text-shadow);
+}
+
+.success {
+  color: green;
+}
+
+.fail {
+  color: red;
+}
+
+#message.success,
+#memoryMessage.success,
+#triviaMessage.success {
+  color: #50c878;
+  animation: fadeIn 0.5s ease;
+}
+
+#message.fail,
+#memoryMessage.fail,
+#triviaMessage.fail {
+  color: #e94e77;
+  animation: fadeIn 0.5s ease;
+}
+
+.lives-display {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.heart {
+  font-size: 24px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.pulse-out {
+  animation: pulse-out 0.3s forwards;
+}
+
+@keyframes pulse-out {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Container for the gradient pickers */
+.gradient-picker-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+/* Wrapper for each color picker */
+.color-picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Label styling */
+.color-picker-wrapper label {
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Style the color picker */
+input[type="color"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Remove the default color picker border and padding */
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+/* Add a border around the color swatch */
+input[type="color"]::-webkit-color-swatch {
+  border: 2px solid #ffffff;
+}
+
+/* Hover effect */
+input[type="color"]:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Adjust label color for light theme */
+body.light .color-picker-wrapper label {
+  color: #333333;
+}
+
+/* Adjust label color for neon theme */
+body.neon .color-picker-wrapper label {
+  color: #00ffff;
+}
+
+/* חלק 10: עיצוב תפריטי הגדרות וסטטיסטיקות */
+#settingsMenu,
+#statsMenu,
+#achievementsMenu,
+#leaderboardMenu,
+#adminPanel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  display: none;
+}
+
+#settingsMenu:not(.hidden),
+#statsMenu:not(.hidden),
+#achievementsMenu:not(.hidden),
+#leaderboardMenu:not(.hidden),
+#adminPanel:not(.hidden) {
+  display: block;
+  z-index: 1000;
+}
+
+#adminPasswordSection {
+  margin-top: 10px;
+}
+
+#adminPasswordSection label {
+  font-size: 18px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+#adminPasswordInput {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 200px;
+  border-radius: 8px;
+  border: 1px solid #ffffff;
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+body.light #adminPasswordInput {
+  border: 1px solid #333333;
+  background: rgba(255, 255, 255, 0.3);
+  color: #333333;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+body.neon #adminPasswordInput {
+  border: 1px solid #00ffcc;
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffcc;
+  box-shadow: 0 2px 10px rgba(0, 255, 255, 0.3);
+}
+
+.menuArea {
+  max-width: 450px;
+  padding: 25px;
+  background-color: rgba(42, 42, 42, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+  outline: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  margin: 0 auto;
+}
+
+body.light .menuArea {
+  background-color: rgba(255, 255, 255, 0.9);
+  outline: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+body.neon .menuArea {
+  background-color: rgba(26, 26, 61, 0.9);
+  outline: 1px solid rgba(0, 255, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+body.space .menuArea {
+  background-color: rgba(10, 10, 35, 0.9);
+  outline: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.hidden {
+  display: none;
+}
+
+h3 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-shadow: var(--text-shadow);
+}
+
+/* חלק 11: עיצוב סעיפי הגדרות */
+.settings-section {
+  margin: 15px 0;
+}
+
+.settings-section label {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+#volumeControl {
+  width: 100%;
+  max-width: 200px;
+  height: 5px;
+  border-radius: 5px;
+  background: #ffffff;
+  transition: background 0.3s ease;
+  min-height: 48px;
+  touch-action: manipulation;
+}
+
+body.light #volumeControl {
+  background: #333333;
+}
+
+body.neon #volumeControl {
+  background: #00ffcc;
+}
+
+#themeSelect,
+#confettiType,
+#confettiAmount,
+#sortStats {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ffffff;
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  transition: background 0.3s ease, border 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+body.light #themeSelect,
+body.light #confettiType,
+body.light #confettiAmount,
+body.light #sortStats {
+  border: 1px solid #333333;
+  background: rgba(255, 255, 255, 0.3);
+  color: #333333;
+}
+
+body.neon #themeSelect,
+body.neon #confettiType,
+body.neon #confettiAmount,
+body.neon #sortStats {
+  border: 1px solid #00ffcc;
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffcc;
+}
+
+.color-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.color-options span {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+body.light .color-options span {
+  color: #1a1a1a;
+}
+
+body.neon .color-options span {
+  color: #00ffcc;
+}
+
+.color-swatch {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+#applyGradientBtn {
+  padding: 14px 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+#applyGradientBtn {
+  background: linear-gradient(135deg, #1e90ff, #00b7eb);
+  color: #ffffff;
+  box-shadow: var(--button-shadow);
+}
+
+#applyGradientBtn:hover {
+  background: linear-gradient(135deg, #00b7eb, #1e90ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.6);
+}
+
+body.light #applyGradientBtn {
+  background: linear-gradient(135deg, #87cefa, #b0e0e6);
+  color: #333333;
+}
+
+body.light #applyGradientBtn:hover {
+  background: linear-gradient(135deg, #b0e0e6, #87cefa);
+  box-shadow: 0 6px 20px rgba(135, 206, 250, 0.6);
+}
+
+body.neon #applyGradientBtn {
+  background: linear-gradient(135deg, #00ced1, #40e0d0);
+  color: #000000;
+}
+
+/* חלק 12: עיצוב כפתורי השתקה ורטט */
+#muteBtn,
+#vibrationBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 5px;
+  font-family: "Rubik", sans-serif;
+  box-shadow: var(--button-shadow);
+  position: relative;
+  overflow: hidden;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#muteBtn {
+  background: linear-gradient(135deg, #1e90ff, #00b7eb);
+  color: #ffffff;
+}
+
+#muteBtn:hover {
+  background: linear-gradient(135deg, #00b7eb, #1e90ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.6);
+}
+
+#vibrationBtn {
+  background: linear-gradient(135deg, #ff8c00, #ffa500);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+}
+
+#vibrationBtn:hover {
+  background: linear-gradient(135deg, #ffa500, #ff8c00);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6);
+}
+
+body.light #muteBtn {
+  background: linear-gradient(135deg, #87cefa, #b0e0e6);
+  color: #333333;
+}
+
+body.light #vibrationBtn {
+  background: linear-gradient(135deg, #ffbf80, #ffdab9);
+  color: #333333;
+}
+
+body.neon #muteBtn {
+  background: linear-gradient(135deg, #00ced1, #40e0d0);
+  color: #000000;
+}
+
+body.neon #vibrationBtn {
+  background: linear-gradient(135deg, #ff8c00, #ffa500);
+  color: #000000;
+}
+
+/* חלק 13: עיצוב שדה שם משתמש */
+#usernameSection {
+  max-width: 450px;
+  padding: 25px;
+  background-color: rgba(42, 42, 42, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+  outline: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  width: 100%;
+  margin: 0 auto;
+}
+
+body.light #usernameSection {
+  background-color: rgba(255, 255, 255, 0.9);
+  outline: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+body.neon #usernameSection {
+  background-color: rgba(26, 26, 61, 0.9);
+  outline: 1px solid rgba(0, 255, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+#usernameSection label {
+  font-size: 18px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+#usernameInput {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 200px;
+  border-radius: 8px;
+  border: 1px solid #ffffff;
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+body.light #usernameInput {
+  border: 1px solid #333333;
+  background: rgba(255, 255, 255, 0.3);
+  color: #333333;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+body.neon #usernameInput {
+  border: 1px solid #00ffcc;
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffcc;
+  box-shadow: 0 2px 10px rgba(0, 255, 255, 0.3);
+}
+
+#submitUsernameBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1e90ff, #00b7eb);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: var(--button-shadow);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#submitUsernameBtn:hover {
+  background: linear-gradient(135deg, #00b7eb, #1e90ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.6);
+}
+
+body.light #submitUsernameBtn {
+  background: linear-gradient(135deg, #87cefa, #b0e0e6);
+  color: #333333;
+}
+
+body.light #submitUsernameBtn:hover {
+  background: linear-gradient(135deg, #b0e0e6, #87cefa);
+  box-shadow: 0 6px 20px rgba(135, 206, 250, 0.6);
+}
+
+body.neon #submitUsernameBtn {
+  background: linear-gradient(135deg, #00ced1, #40e0d0);
+  color: #000000;
+}
+
+/* חלק 14: עיצוב כפתורי חזרה ואיפוס */
+#backToGame,
+#backToGameFromStats,
+#resetStatsBtn,
+#backToGameFromAchievements,
+#backToGameFromLeaderboard,
+#backToGameFromAdmin {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 10px 5px;
+  font-family: "Rubik", sans-serif;
+  box-shadow: var(--button-shadow);
+  position: relative;
+  overflow: hidden;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#backToGame,
+#backToGameFromStats,
+#backToGameFromAchievements,
+#backToGameFromLeaderboard,
+#backToGameFromAdmin {
+  background: linear-gradient(135deg, #1e90ff, #00b7eb);
+  color: #ffffff;
+}
+
+#backToGame:hover,
+#backToGameFromStats:hover,
+#backToGameFromAchievements:hover,
+#backToGameFromLeaderboard:hover,
+#backToGameFromAdmin:hover {
+  background: linear-gradient(135deg, #00b7eb, #1e90ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.6);
+}
+
+#resetStatsBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+}
+
+#resetStatsBtn:hover {
+  background: linear-gradient(135deg, #ff6347, #ff4040);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.light #backToGame,
+body.light #backToGameFromStats,
+body.light #backToGameFromAchievements,
+body.light #backToGameFromLeaderboard,
+body.light #backToGameFromAdmin {
+  background: linear-gradient(135deg, #87cefa, #b0e0e6);
+  color: #333333;
+}
+
+body.light #resetStatsBtn {
+  background: linear-gradient(135deg, #ff8080, #ffa07a);
+  color: #333333;
+}
+
+body.neon #backToGame,
+body.neon #backToGameFromStats,
+body.neon #backToGameFromAchievements,
+body.neon #backToGameFromLeaderboard,
+body.neon #backToGameFromAdmin {
+  background: linear-gradient(135deg, #00ced1, #40e0d0);
+  color: #000000;
+}
+
+body.neon #resetStatsBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #000000;
+}
+
+/* חלק 15: סגנונות לחלקיקים, כיתוב משני, אנימציית גלים, הודעת רטט */
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+body.light #particles-js {
+  opacity: 0.3;
+}
+
+body.neon #particles-js {
+  opacity: 0.7;
+}
+
+#subtitle {
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-shadow: var(--text-shadow);
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+body.light #subtitle {
+  color: #333333;
+}
+
+body.neon #subtitle {
+  color: #00ffcc;
+}
+
+.bounce {
+  animation: bounce-button 0.3s ease;
+}
+
+#vibrationSupportMessage {
+  font-size: 16px;
+  margin: 10px 0;
+  text-shadow: var(--text-shadow);
+}
+
+/* חלק 16: שדרוג עיצוב הסטטיסטיקות */
+#statsMenu .menuArea {
+  padding: 30px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(42, 42, 42, 0.95), rgba(60, 60, 60, 0.9));
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+body.light #statsMenu .menuArea {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.9));
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+body.neon #statsMenu .menuArea {
+  background: linear-gradient(145deg, rgba(26, 26, 61, 0.95), rgba(40, 40, 80, 0.9));
+  box-shadow: 0 15px 30px rgba(0, 255, 255, 0.4), inset 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.sort-options {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-options label {
+  font-size: 16px;
+}
+
+#sortStats {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#sortStats:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+}
+
+body.light #sortStats:hover {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+body.neon #sortStats:hover {
+  box-shadow: 0 2px 10px rgba(0, 255, 255, 0.4);
+}
+
+#averageTime,
+#successRate {
+  font-size: 16px;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#averageTime:hover,
+#successRate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+body.light #averageTime,
+body.light #successRate {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.neon #averageTime,
+body.neon #successRate {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+#detailedStatsList,
+#achievementsList,
+#leaderboardList {
+  max-height: 150px;
+  overflow-y: auto;
+  margin: 15px 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+#detailedStatsList li,
+#achievementsList li,
+#leaderboardList li {
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.3s ease;
+}
+
+#detailedStatsList li:nth-child(odd),
+#achievementsList li:nth-child(odd),
+#leaderboardList li:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+#detailedStatsList li:hover,
+#achievementsList li:hover,
+#leaderboardList li:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body.light #detailedStatsList,
+body.light #achievementsList,
+body.light #leaderboardList {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+body.light #detailedStatsList li,
+body.light #achievementsList li,
+body.light #leaderboardList li {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.neon #detailedStatsList,
+body.neon #achievementsList,
+body.neon #leaderboardList {
+  background: rgba(0, 255, 255, 0.05);
+}
+
+body.neon #detailedStatsList li,
+body.neon #achievementsList li,
+body.neon #leaderboardList li {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+#achievementsList li.completed {
+  background: rgba(50, 205, 50, 0.2);
+}
+
+body.light #achievementsList li.completed {
+  background: rgba(50, 205, 50, 0.1);
+}
+
+body.neon #achievementsList li.completed {
+  background: rgba(50, 205, 50, 0.3);
+}
+
+#statsChart {
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+}
+
+body.light #statsChart {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+body.neon #statsChart {
+  box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+  background: rgba(0, 255, 255, 0.05);
+}
+
+/* סגנון להודעה "אין נתונים זמינים להצגה" */
+.no-data-message {
+  font-size: 16px;
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.5s ease;
+}
+
+body.light .no-data-message {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.neon .no-data-message {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+/* סגנון לגלילה חלקה ברשימה */
+#detailedStatsList::-webkit-scrollbar,
+#achievementsList::-webkit-scrollbar,
+#leaderboardList::-webkit-scrollbar {
+  width: 8px;
+}
+
+#detailedStatsList::-webkit-scrollbar-track,
+#achievementsList::-webkit-scrollbar-track,
+#leaderboardList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+#detailedStatsList::-webkit-scrollbar-thumb,
+#achievementsList::-webkit-scrollbar-thumb,
+#leaderboardList::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+}
+
+body.neon #detailedStatsList::-webkit-scrollbar-track,
+body.neon #achievementsList::-webkit-scrollbar-track,
+body.neon #leaderboardList::-webkit-scrollbar-track {
+  background: rgba(0, 255, 255, 0.2);
+}
+
+body.light #detailedStatsList::-webkit-scrollbar-thumb,
+body.light #achievementsList::-webkit-scrollbar-thumb,
+body.light #leaderboardList::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+body.neon #detailedStatsList::-webkit-scrollbar-thumb,
+body.neon #achievementsList::-webkit-scrollbar-thumb,
+body.neon #leaderboardList::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 255, 0.5);
+}
+
+/* חלק 17: התאמות לרספונסיביות */
+@media (max-width: 600px) {
+  #gameArea,
+  .menuArea,
+  #usernameSection {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  #difficultySection label,
+  #modeSection label,
+  .settings-section label,
+  .sort-options label,
+  #memoryDifficultySection label,
+  #triviaCategorySection label,
+  .admin-section label {
+    font-size: 16px;
+  }
+
+  #difficulty,
+  #gameMode,
+  #memoryDifficulty,
+  #triviaCategory,
+  #themeSelect,
+  #confettiType,
+  #confettiAmount,
+  #sortStats,
+  #rgbSpeed,
+  #adminUserSelect,
+  #adminBanUserSelect {
+    font-size: 14px;
+    padding: 8px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  #guessInput,
+  #usernameInput,
+  #adminPasswordInput {
+    width: 100px;
+    font-size: 14px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  #guessButton,
+  #hintButton,
+  #startGameBtn,
+  #stopGameBtn,
+  #viewStatsBtn,
+  #viewAchievementsBtn,
+  #viewLeaderboardBtn,
+  #muteBtn,
+  #vibrationBtn,
+  #submitUsernameBtn,
+  #backToGame,
+  #backToGameFromStats,
+  #resetStatsBtn,
+  #backToGameFromAchievements,
+  #backToGameFromLeaderboard,
+  #applyGradientBtn,
+  #resetGradientBtn,
+  #playAgainBtn,
+  performanceModeBtn,
+  #startMemoryMatchBtn,
+  #restartMemoryMatchBtn,
+  #startTriviaBtn,
+  #restartTriviaBtn,
+  #rgbBtn,
+  #banUserBtn,
+  #resetLeaderboardBtn,
+  #backToGameFromAdmin {
+    font-size: 14px;
+    padding: 10px 16px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  #settingsBtn,
+  #statsBtn {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  #settingsBtn {
+    right: 15px;
+  }
+
+  #statsBtn {
+    right: 70px;
+  }
+
+  #inputContainer,
+  .game-selection,
+  .trivia-options {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  #detailedStatsList,
+  #achievementsList,
+  #leaderboardList {
+    max-height: 120px;
+  }
+
+  #statsChart {
+    max-height: 200px;
+  }
+
+  .memory-board {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 8px;
+  }
+
+  .memory-card {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  #subtitle {
+    font-size: 16px;
+  }
+
+  #highscore,
+  #timer,
+  #idleTimer,
+  #message,
+  #averageTime,
+  #successRate,
+  #memoryTimer,
+  #memoryMoves,
+  #triviaScore,
+  #triviaTimer,
+  #memoryMessage,
+  #triviaMessage {
+    font-size: 14px;
+  }
+
+  .color-options {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .color-swatch {
+    width: 35px;
+    height: 35px;
+  }
+
+  .memory-card {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+/* חלק 18: נגישות נוספת */
+:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+body.light :focus {
+  outline: 2px solid #333333;
+}
+
+body.neon :focus {
+  outline: 2px solid #00ffcc;
+}
+
+/* חלק 19: השבתת אנימציות עבור משתמשים שמעדיפים תנועה מופחתת */
+@media (prefers-reduced-motion: reduce) {
+  body,
+  button:hover,
+  .sparkle,
+  .heart,
+  #message.success,
+  #message.fail,
+  #memoryMessage.success,
+  #memoryMessage.fail,
+  #triviaMessage.success,
+  #triviaMessage.fail {
+    animation: none !important;
+  }
+
+  button:hover,
+  #guessButton:hover,
+  #hintButton:hover,
+  #startGameBtn:hover,
+  #stopGameBtn:hover,
+  #viewStatsBtn:hover,
+  #viewAchievementsBtn:hover,
+  #viewLeaderboardBtn:hover,
+  #muteBtn:hover,
+  #vibrationBtn:hover,
+  #submitUsernameBtn:hover,
+  #backToGame:hover,
+  #backToGameFromStats:hover,
+  #resetStatsBtn:hover,
+  #backToGameFromAchievements:hover,
+  #backToGameFromLeaderboard:hover,
+  #applyGradientBtn:hover,
+  #averageTime:hover,
+  #successRate:hover,
+  #sortStats:hover,
+  .color-swatch:hover,
+  #playAgainBtn:hover,
+  #startMemoryMatchBtn:hover,
+  #restartMemoryMatchBtn:hover,
+  #startTriviaBtn:hover,
+  #restartTriviaBtn:hover,
+  #rgbBtn:hover,
+  #banUserBtn:hover,
+  #resetLeaderboardBtn:hover,
+  #backToGameFromAdmin:hover {
+    transform: none !important;
+  }
+}
+
+#changeUsernameBtn {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  margin: 10px 0;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#changeUsernameBtn:hover {
+  background-color: #357abd;
+  transform: scale(1.05);
+}
+
+#changeUsernameBtn:active {
+  transform: scale(0.95);
+}
+
+/* Confirmation Dialog */
+#confirmationDialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+#confirmationDialog:not(.hidden) {
+  display: flex;
+}
+
+.confirmation-content {
+  background: #2a2a2a;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.confirmation-content h3 {
+  font-family: 'Rubik', sans-serif;
+  color: white;
+  margin: 0 0 20px 0;
+  font-size: 20px;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 2100;
+}
+
+.confirmation-buttons button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  pointer-events: auto;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.confirmation-buttons button:hover {
+  background-color: #357abd;
+  transform: scale(1.05);
+}
+
+.confirmation-buttons button:active {
+  transform: scale(0.95);
+}
+
+#cancelBtn {
+  background-color: #e94e77;
+}
+
+#cancelBtn:hover {
+  background-color: #c0392b;
+}
+
+/* Align elements to the right on mobile */
+@media (max-width: 600px) {
+  #inputContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+  }
+
+  #settingsBtn, #statsBtn, #viewStatsBtn {
+    float: right;
+    margin-left: 10px;
+  }
+
+  select, button, #guessInput {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  #guessInput {
+    width: 80px;
+    margin-right: 5px;
+  }
+
+  #message {
+    font-size: 16px;
+  }
+}
+
+/* Styling for cancelUsernameBtn */
+#cancelUsernameBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e94e77, #ff6347);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#cancelUsernameBtn:hover {
+  background: linear-gradient(135deg, #ff6347, #e94e77);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.light #cancelUsernameBtn {
+  background: linear-gradient(135deg, #ff8080, #ffa07a);
+  color: #333333;
+  box-shadow: 0 4px 15px rgba(255, 128, 128, 0.4);
+}
+
+body.light #cancelUsernameBtn:hover {
+  background: linear-gradient(135deg, #ffa07a, #ff8080);
+  box-shadow: 0 6px 20px rgba(255, 128, 128, 0.6);
+}
+
+body.neon #cancelUsernameBtn {
+  background: linear-gradient(135deg, #e94e77, #ff6347);
+  color: #000000;
+}
+
+/* Styling for resetGradientBtn */
+#resetGradientBtn {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+  margin-left: 10px;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#resetGradientBtn:hover {
+  background: linear-gradient(135deg, #ff6347, #ff4040);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.light #resetGradientBtn {
+  background: linear-gradient(135deg, #ff8080, #ffa07a);
+  color: #333333;
+  box-shadow: 0 4px 15px rgba(255, 128, 128, 0.4);
+}
+
+body.light #resetGradientBtn:hover {
+  background: linear-gradient(135deg, #ffa07a, #ff8080);
+  box-shadow: 0 6px 20px rgba(255, 128, 128, 0.6);
+}
+
+body.neon #resetGradientBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #000000;
+}
+#performanceModeBtn {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+  margin-left: 10px;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#performanceModeBtn:hover {
+  background: linear-gradient(135deg, #ff6347, #ff4040);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.light #performanceModeBtn {
+  background: linear-gradient(135deg, #ff8080, #ffa07a);
+  color: #333333;
+  box-shadow: 0 4px 15px rgba(255, 128, 128, 0.4);
+}
+
+body.light #performanceModeBtn:hover {
+  background: linear-gradient(135deg, #ffa07a, #ff8080);
+  box-shadow: 0 6px 20px rgba(255, 128, 128, 0.6);
+}
+
+body.neon #performanceModeBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #000000;
+}
+
+/* Prevent text selection on non-interactive text elements to avoid blinking cursor */
+#gameArea h1,
+#gameArea p,
+#gameArea label,
+#settingsMenu h3,
+#settingsMenu p,
+#settingsMenu label,
+#statsMenu h3,
+#statsMenu h4,
+#statsMenu p,
+#statsMenu label,
+#achievementsMenu h3,
+#achievementsMenu li,
+#leaderboardMenu h3,
+#leaderboardMenu li,
+#usernameSection label,
+#achievementsList li,
+#leaderboardList li,
+#detailedStatsList li,
+#confirmationDialog h3,
+#adminPanel h3,
+#adminPanel h4,
+#adminPanel p,
+#adminPanel label {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Prevent text selection inside buttons to avoid blinking cursor */
+button {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Ensure interactive elements remain selectable */
+#guessInput,
+#usernameInput,
+select {
+  user-select: auto;
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+}
+
+/* Styling for clearLeaderboardBtn */
+#clearLeaderboardBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 10px 5px;
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#clearLeaderboardBtn:hover {
+  background: linear-gradient(135deg, #ff6347, #ff4040);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.light #clearLeaderboardBtn {
+  background: linear-gradient(135deg, #ff8080, #ffa07a);
+  color: #333333;
+  box-shadow: 0 4px 15px rgba(255, 128, 128, 0.4);
+}
+
+body.light #clearLeaderboardBtn:hover {
+  background: linear-gradient(135deg, #ffa07a, #ff8080);
+  box-shadow: 0 6px 20px rgba(255, 128, 128, 0.6);
+}
+
+body.neon #clearLeaderboardBtn {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  color: #000000;
+}
+
+#playAgainBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 10px 5px;
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(135deg, #40c4ff, #0288d1);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(64, 196, 255, 0.4);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#playAgainBtn:hover {
+  background: linear-gradient(135deg, #0288d1, #40c4ff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(64, 196, 255, 0.6);
+}
+
+body.light #playAgainBtn {
+  background: linear-gradient(135deg, #81d4fa, #4fc3f7);
+  color: #333333;
+  box-shadow: 0 4px 15px rgba(129, 212, 250, 0.4);
+}
+
+body.light #playAgainBtn:hover {
+  background: linear-gradient(135deg, #4fc3f7, #81d4fa);
+  box-shadow: 0 6px 20px rgba(129, 212, 250, 0.6);
+}
+
+body.neon #playAgainBtn {
+  background: linear-gradient(135deg, #40c4ff, #0288d1);
+  color: #000000;
+}
+
+#triviaQuestionsCounter {
+  font-size: 16px;
+  margin: 10px 0;
+  text-shadow: var(--text-shadow);
+  color: #ffffff;
+}
+
+body.light #triviaQuestionsCounter {
+  color: #333333;
+}
+
+body.neon #triviaQuestionsCounter {
+  color: #00ffcc;
+}
+
+@media (max-width: 600px) {
+  #triviaQuestionsCounter {
+    font-size: 14px;
+  }
+}
+
+/* Styling for Banned Users List */
+#bannedUsersList {
+  max-height: 150px;
+  overflow-y: auto;
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+#bannedUsersList li {
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+#bannedUsersList li:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body.light #bannedUsersList {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+body.light #bannedUsersList li {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light #bannedUsersList li:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.neon #bannedUsersList {
+  background: rgba(0, 255, 255, 0.05);
+}
+
+body.neon #bannedUsersList li {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+body.neon #bannedUsersList li:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+/* Styling for Unban User Button */
+#unbanUserBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #50c878, #32cd32);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 4px 15px rgba(80, 200, 120, 0.4);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#unbanUserBtn:hover {
+  background: linear-gradient(135deg, #32cd32, #50c878);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(80, 200, 120, 0.6);
+}
+
+body.light #unbanUserBtn {
+  background: linear-gradient(135deg, #98fb98, #90ee90);
+  color: #333333;
+  box-shadow: 0 4px 15px rgba(152, 251, 152, 0.4);
+}
+
+body.light #unbanUserBtn:hover {
+  background: linear-gradient(135deg, #90ee90, #98fb98);
+  box-shadow: 0 6px 20px rgba(152, 251, 152, 0.6);
+}
+
+body.neon #unbanUserBtn {
+  background: linear-gradient(135deg, #00ff00, #00cc00);
+  color: #000000;
+}
+
+body.neon #unbanUserBtn:hover {
+  background: linear-gradient(135deg, #00cc00, #00ff00);
+  box-shadow: 0 6px 20px rgba(0, 255, 0, 0.7);
+}
+
+/* Responsive adjustments for new elements */
+@media (max-width: 600px) {
+  #forgotPasswordBtn {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  #unbanUserBtn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  #bannedUsersList {
+    max-height: 120px;
+  }
+
+  #bannedUsersList li {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
+#stopTriviaBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff4500, #dc143c);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#stopTriviaBtn:hover {
+  background: linear-gradient(135deg, #dc143c, #ff4500);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.6);
+}
+
+body.light #stopTriviaBtn {
+  background: linear-gradient(135deg, #ff6347, #ff4040);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+}
+
+body.light #stopTriviaBtn:hover {
+  background: linear-gradient(135deg, #ff4040, #ff6347);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+}
+
+body.neon #stopTriviaBtn {
+  background: linear-gradient(135deg, #ff0000, #cc0000);
+  color: #ffffff;
+}
+
+body.neon #stopTriviaBtn:hover {
+  background: linear-gradient(135deg, #cc0000, #ff0000);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
+}
+
+#resetUserScoreBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4682b4, #4169e1);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Rubik", sans-serif;
+  box-shadow: 0 4px 15px rgba(65, 105, 225, 0.4);
+  min-width: 48px;
+  min-height: 48px;
+}
+
+#resetUserScoreBtn:hover {
+  background: linear-gradient(135deg, #4169e1, #4682b4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(65, 105, 225, 0.6);
+}
+
+body.light #resetUserScoreBtn {
+  background: linear-gradient(135deg, #87ceeb, #6495ed);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(100, 149, 237, 0.4);
+}
+
+body.light #resetUserScoreBtn:hover {
+  background: linear-gradient(135deg, #6495ed, #87ceeb);
+  box-shadow: 0 6px 20px rgba(100, 149, 237, 0.6);
+}
+
+body.neon #resetUserScoreBtn {
+  background: linear-gradient(135deg, #00b7eb, #0099cc);
+  color: #ffffff;
+}
+
+body.neon #resetUserScoreBtn:hover {
+  background: linear-gradient(135deg, #0099cc, #00b7eb);
+  box-shadow: 0 6px 20px rgba(0, 183, 235, 0.7);
+}
+
+#adminResetScoreMessage {
+  font-size: 14px;
+  margin: 10px 0;
+  color: #ffffff;
+}
+
+body.light #adminResetScoreMessage {
+  color: #333333;
+}
+
+body.neon #adminResetScoreMessage {
+  color: #00ffcc;
+}
+
+.return-to-site {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-family: 'Rubik', sans-serif;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  font-size: 16px;
+}
+
+.return-to-site:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.return-to-site:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
